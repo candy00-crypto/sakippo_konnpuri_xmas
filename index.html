@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>秘密な診断への入り口</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- パスワード入力用ウィンドウだけを表示 -->
+    <div id="passwordModal" class="modal" aria-hidden="false">
+      <div class="modal-dialog">
+        <div class="modal-title">全部集めたひとだけが先に進めます。</div>
+        <div class="modal-text">10桁のパスワードを入力してね。</div>
+        <div class="modal-inputs">
+          <input type="password" maxlength="1" inputmode="numeric" class="digit-input modal-digit" />
+          <input type="password" maxlength="1" inputmode="numeric" class="digit-input modal-digit" />
+          <input type="password" maxlength="1" inputmode="numeric" class="digit-input modal-digit" />
+          <input type="password" maxlength="1" inputmode="numeric" class="digit-input modal-digit" />
+          <input type="password" maxlength="1" inputmode="numeric" class="digit-input modal-digit" />
+          <input type="password" maxlength="1" inputmode="numeric" class="digit-input modal-digit" />
+          <input type="password" maxlength="1" inputmode="numeric" class="digit-input modal-digit" />
+          <input type="password" maxlength="1" inputmode="numeric" class="digit-input modal-digit" />
+          <input type="password" maxlength="1" inputmode="numeric" class="digit-input modal-digit" />
+          <input type="password" maxlength="1" inputmode="numeric" class="digit-input modal-digit" />
+        </div>
+        <div id="modalError" class="modal-error"></div>
+        <div class="modal-buttons">
+          <button id="modalClose" class="modal-button secondary">
+            とじる
+          </button>
+          <button id="modalSubmit" class="modal-button primary">
+            ひみつをひらく
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
+
+

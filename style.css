@@ -1,0 +1,320 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 背景画像（IMG_0317.JPG）を全面に表示 */
+  background-color: #000;
+  background-image: url("IMG_0317.JPG");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Maru Gothic ProN",
+    "Yu Gothic", "Meiryo", sans-serif;
+}
+
+.page {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  aspect-ratio: 1407 / 768;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 14px 40px rgba(15, 69, 50, 0.6);
+  animation: pageFloat 6s ease-in-out infinite alternate;
+}
+
+.background-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform-origin: center;
+  animation: bgTwinkle 10s ease-in-out infinite alternate;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* 子要素で必要なところだけ有効化 */
+}
+
+.password-area {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  max-width: 700px;
+  text-align: center;
+}
+
+.password-label {
+  font-size: clamp(18px, 2.2vw, 24px);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #f5e6a2; /* ゴールド系 */
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.9),
+    0 0 16px rgba(245, 230, 162, 0.95);
+  margin-bottom: 12px;
+}
+
+.password-inputs {
+  display: flex;
+  justify-content: center;
+  gap: clamp(6px, 0.8vw, 10px);
+}
+
+.digit-input {
+  /* 10桁でも1行に収まるように少し小さめに調整 */
+  width: clamp(22px, 3vw, 30px);
+  height: clamp(22px, 3vw, 30px);
+  border-radius: 50%;
+  border: 2px solid rgba(255, 195, 215, 0.95);
+  background: radial-gradient(circle at 30% 30%, #2b0614, #5b1026);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.7);
+  text-align: center;
+  font-size: clamp(20px, 2.4vw, 28px);
+  color: #ffe6f1; /* うすピンク */
+  line-height: 1;
+  padding: 0;
+  outline: none;
+  pointer-events: auto;
+  transition: transform 0.15s ease, box-shadow 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.digit-input:focus {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 14px rgba(255, 105, 180, 0.8);
+  border-color: #ff86b8;
+}
+
+.digit-input::placeholder {
+  color: transparent;
+}
+
+/* ひみつをひらく ボタン範囲（画像上のボタンの位置に重ねる） */
+.secret-button {
+  position: absolute;
+  left: 50%;
+  top: 78%;
+  transform: translate(-50%, -50%);
+  width: 42%;
+  height: 15%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  /* ホバー・タップ時の軽いアニメーション */
+  animation: buttonPulse 3s ease-in-out infinite;
+}
+
+.secret-button:active {
+  transform: translate(-50%, -50%) scale(0.96);
+}
+
+/* スマホでの誤タップを防ぐためのタップ範囲 */
+@media (max-width: 768px) {
+  .secret-button {
+    width: 60%;
+    height: 18%;
+  }
+
+  /* スマホ時も10桁がしっかり収まるようにさらに小さく */
+  .modal-inputs {
+    gap: 4px;
+  }
+
+  .digit-input {
+    width: 24px;
+    height: 24px;
+    font-size: 18px;
+    border-width: 2px;
+  }
+}
+
+/* モーダル（ポップアップ） */
+.hidden {
+  display: none;
+}
+
+.modal {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 少しセクシーな雰囲気のダークワイン系オーバーレイ */
+  background: radial-gradient(
+    circle at top,
+    rgba(0, 0, 0, 0.2),
+    rgba(20, 0, 12, 0.9)
+  );
+  backdrop-filter: blur(3px);
+  pointer-events: auto;
+  z-index: 5;
+}
+
+.modal-dialog {
+  padding: 24px 26px 20px;
+  width: min(90%, 420px);
+  border-radius: 20px;
+  background: radial-gradient(circle at top, #3b0717, #140008);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+  text-align: center;
+  border: 1px solid rgba(255, 182, 219, 0.8);
+  animation: modalIn 0.4s ease-out;
+}
+
+.modal-title {
+  /* タイトルが改行されないように、画面幅に応じて小さくなるフォントサイズに調整 */
+  font-size: clamp(14px, 4.5vw, 20px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #ffb6d9; /* くすんだピンク */
+  margin-bottom: 4px;
+  white-space: nowrap;
+  text-shadow: 0 0 10px rgba(255, 182, 219, 0.9);
+}
+
+.modal-text {
+  font-size: 14px;
+  color: #f1d2e6;
+  margin-bottom: 14px;
+}
+
+.modal-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.modal-error {
+  min-height: 18px;
+  font-size: 13px;
+  color: #ff86b8;
+  margin-bottom: 10px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.modal-button {
+  min-width: 110px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(206, 133, 184, 0.4);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.modal-button.primary {
+  background: linear-gradient(135deg, #ff3b6c, #b31237);
+  color: #ffe6f1;
+}
+
+.modal-button.secondary {
+  background: linear-gradient(135deg, #111111, #2a2a2a);
+  color: #ffb6d9;
+}
+
+.modal-button:active {
+  transform: translateY(1px) scale(0.97);
+  box-shadow: 0 2px 6px rgba(173, 108, 163, 0.4);
+  filter: brightness(0.98);
+}
+
+@keyframes modalIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ふわふわ浮くアニメーション */
+@keyframes pageFloat {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* 背景のきらきら感 */
+@keyframes bgTwinkle {
+  0% {
+    filter: brightness(1) saturate(1);
+  }
+  50% {
+    filter: brightness(1.05) saturate(1.08);
+  }
+  100% {
+    filter: brightness(1) saturate(1);
+  }
+}
+
+/* ボタンがほんのりドキドキするようなアニメーション */
+@keyframes buttonPulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -52%) scale(1.03);
+  }
+}
+
+/* 入力不足のときのぷるぷる */
+.shake {
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-6px);
+  }
+  50% {
+    transform: translateX(6px);
+  }
+  75% {
+    transform: translateX(-4px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+
