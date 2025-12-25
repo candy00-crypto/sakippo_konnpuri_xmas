@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (code === CORRECT_PASSWORD) {
       window.location.href =
-        "https://note.com/saki_pochan/n/nb7a1fccdc5ea";
+        "https://note.com/preview/n8addc56f6250?prev_access_key=afc99a6b6c1f25a367e3336ef5162320";
     } else {
       shakeWithMessage("パスワードが違います。");
     }
